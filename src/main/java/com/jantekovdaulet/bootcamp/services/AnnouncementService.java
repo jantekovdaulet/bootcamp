@@ -12,6 +12,6 @@ public interface AnnouncementService {
     Announcement getAnnouncement(Long id);
     List<Announcement> getAnnouncementsByName(String key);
     Announcement saveAnnouncement(Announcement announcement);
-    List<Announcement> getAnnouncementsByUser(Users user);
+    List<Announcement> getAnnouncementsBySalesman(Users salesman);
     void deleteAnnouncementById(Long annId);
 }

@@ -21,7 +21,7 @@
             </div>
             <div class="profile-content-info-item">
                 <span class="profile-content-info-item-title">Salesman:</span>
-                <span th:text="${announcement.user.surname} + ' ' + ${announcement.user.name} + ' (' + ${announcement.user.email} + ')'"></span>
+                <span th:text="${announcement.salesman.surname} + ' ' + ${announcement.salesman.name} + ' (' + ${announcement.salesman.email} + ')'"></span>
             </div>
             <div class="profile-content-info-item">
                 <span class="profile-content-info-item-title">Starting price:</span>
@@ -31,7 +31,7 @@
                 <span class="profile-content-info-item-title">Current price:</span>
                 <span th:text="'$' + ${announcement.currentPrice}"></span>
             </div>
-            <div th:if="${currentUser.id == announcement.user.id}" class="profile-content-info-item"
+            <div th:if="${currentUser.id == announcement.salesman.id}" class="profile-content-info-item"
                  style="margin-top: 80px">
                 <form th:action="@{'/upload-ann-picture'}" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
@@ -50,7 +50,7 @@
                     </div>
                 </form>
             </div>
-            <div th:unless="${currentUser.id == announcement.user.id}" class="profile-content-info-item"
+            <div th:unless="${currentUser.id == announcement.salesman.id}" class="profile-content-info-item"
                  style="margin-top: 80px">
                 <form th:action="@{'/place-bet'}" method="post">
                     <div class="mb-3">

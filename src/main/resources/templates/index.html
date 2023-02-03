@@ -24,7 +24,7 @@
                 <s><h6 class="card-text" style="color: red" th:text="'$' + ${ann.minPrice}"></h6></s>
                 <h6 class="card-text" style="color: green" th:text="'$' + ${ann.currentPrice}"></h6>
             </div>
-            <p class="card-text" th:text="'Salesman: ' + ${ann.user.email}"></p>
+            <p class="card-text" th:text="'Salesman: ' + ${ann.salesman.email}"></p>
             <a th:href="@{'/details/' + ${ann.id}}" class="btn btn-primary">Details</a>
         </div>
     </div>

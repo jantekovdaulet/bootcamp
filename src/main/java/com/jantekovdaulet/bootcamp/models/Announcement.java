@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -35,8 +36,9 @@ public class Announcement extends BaseEntity{
     @Column(name = "status")
     private boolean status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Users user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Users salesman;
 
-    //не знаю, как создать поле для обратного отсчета
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Users buyer;
 }

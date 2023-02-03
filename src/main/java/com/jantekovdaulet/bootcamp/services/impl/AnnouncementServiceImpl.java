@@ -41,8 +41,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public List<Announcement> getAnnouncementsByUser(Users user) {
-        return announcementRepository.findAnnouncementsByUser(user);
+    public List<Announcement> getAnnouncementsBySalesman(Users salesman) {
+        return announcementRepository.findAnnouncementsBySalesman(salesman);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.jantekovdaulet.bootcamp.controllers;
 
 import com.jantekovdaulet.bootcamp.models.Announcement;
+import com.jantekovdaulet.bootcamp.models.Notification;
 import com.jantekovdaulet.bootcamp.models.Users;
 import com.jantekovdaulet.bootcamp.services.AnnouncementService;
+import com.jantekovdaulet.bootcamp.services.NotificationService;
 import com.jantekovdaulet.bootcamp.services.UsersService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -28,6 +30,9 @@ public class AnnouncementController {
 
     @Autowired
     private AnnouncementService announcementService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
     private UsersService usersService;
@@ -60,7 +65,7 @@ public class AnnouncementController {
         Users currentUser = usersService.getUserData();
         model.addAttribute("currentUser", currentUser);
 
-        List<Announcement> announcements = announcementService.getAnnouncementsByUser(currentUser);
+        List<Announcement> announcements = announcementService.getAnnouncementsBySalesman(currentUser);
         model.addAttribute("announcements", announcements);
 
         return "index";
@@ -93,7 +98,7 @@ public class AnnouncementController {
                                   @RequestParam(name = "userId") Long userId) {
 
         announcement.setCurrentPrice(announcement.getMinPrice() - 1);
-        announcement.setUser(usersService.getUserById(userId));
+        announcement.setSalesman(usersService.getUserById(userId));
         announcementService.addAnnouncement(announcement);
         return "redirect:/details/" + announcement.getId();
     }
@@ -113,7 +118,7 @@ public class AnnouncementController {
 
     @PostMapping(value = "/delete-announcement")
     @PreAuthorize("isAuthenticated()")
-    public String deleteAnnouncement(@RequestParam(name = "annId") Long annId){
+    public String deleteAnnouncement(@RequestParam(name = "annId") Long annId) {
 
         announcementService.deleteAnnouncementById(annId);
         return "redirect:/my-announcements";
@@ -122,13 +127,42 @@ public class AnnouncementController {
     @PostMapping(value = "/place-bet")
     @PreAuthorize("isAuthenticated()")
     public String placeBet(@RequestParam(name = "annId") Long annId,
-                           @RequestParam(name = "bet") double bet){
+                           @RequestParam(name = "bet") double bet) {
 
         Announcement announcement = announcementService.getAnnouncement(annId);
-        if(bet >= announcement.getCurrentPrice()){
+        Users currentUser = usersService.getUserData();
+
+        if (bet >= announcement.getCurrentPrice()) {
+
+            if (announcement.getBuyer() != null) {
+                //отправляем уведомление покупателю, чья ставка была перебита
+                Notification notificationForOldBuyer = new Notification();
+                notificationForOldBuyer.setText("Your bet has been outbid");
+                notificationForOldBuyer.setToWhom(announcement.getBuyer());
+                notificationForOldBuyer.setAnnouncement(announcement);
+                notificationService.saveNotification(notificationForOldBuyer);
+            }
+
+            //сохраняем новую ставку и покупателя
+            announcement.setBuyer(currentUser);
             announcement.setCurrentPrice(bet);
             announcementService.saveAnnouncement(announcement);
+
+            //отправляем уведомление продавцу
+            Notification notificationForOwner = new Notification();
+            notificationForOwner.setText("Your item has been bid on ($" + announcement.getCurrentPrice() + ")");
+            notificationForOwner.setToWhom(announcement.getSalesman());
+            notificationForOwner.setAnnouncement(announcement);
+            notificationService.saveNotification(notificationForOwner);
+
+            //отправляем уведомление покупателю, который сделал ставку
+            Notification notificationForNewBuyer = new Notification();
+            notificationForNewBuyer.setText("You have placed a bid on an item");
+            notificationForNewBuyer.setToWhom(announcement.getBuyer());
+            notificationForNewBuyer.setAnnouncement(announcement);
+            notificationService.saveNotification(notificationForNewBuyer);
         }
+
         return "redirect:/details/" + annId + "?succes-bet";
     }
 
