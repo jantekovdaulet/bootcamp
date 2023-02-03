@@ -133,14 +133,10 @@ public class AnnouncementController {
         Users currentUser = usersService.getUserData();
 
         if (bet >= announcement.getCurrentPrice()) {
-
+            //проверяем нет ли покупателя, чья ставка была перебита
             if (announcement.getBuyer() != null) {
                 //отправляем уведомление покупателю, чья ставка была перебита
-                Notification notificationForOldBuyer = new Notification();
-                notificationForOldBuyer.setText("Your bet has been outbid");
-                notificationForOldBuyer.setToWhom(announcement.getBuyer());
-                notificationForOldBuyer.setAnnouncement(announcement);
-                notificationService.saveNotification(notificationForOldBuyer);
+                notificationService.sendNotificationForBuyer("Your bet has been outbid", announcement);
             }
 
             //сохраняем новую ставку и покупателя
@@ -149,18 +145,10 @@ public class AnnouncementController {
             announcementService.saveAnnouncement(announcement);
 
             //отправляем уведомление продавцу
-            Notification notificationForOwner = new Notification();
-            notificationForOwner.setText("Your item has been bid on ($" + announcement.getCurrentPrice() + ")");
-            notificationForOwner.setToWhom(announcement.getSalesman());
-            notificationForOwner.setAnnouncement(announcement);
-            notificationService.saveNotification(notificationForOwner);
+            notificationService.sendNotificationForSalesman("Your item has been bid on ($" + announcement.getCurrentPrice() + ")", announcement);
 
             //отправляем уведомление покупателю, который сделал ставку
-            Notification notificationForNewBuyer = new Notification();
-            notificationForNewBuyer.setText("You have placed a bid on an item");
-            notificationForNewBuyer.setToWhom(announcement.getBuyer());
-            notificationForNewBuyer.setAnnouncement(announcement);
-            notificationService.saveNotification(notificationForNewBuyer);
+            notificationService.sendNotificationForBuyer("You have placed a bid on an item", announcement);
         }
 
         return "redirect:/details/" + annId + "?succes-bet";

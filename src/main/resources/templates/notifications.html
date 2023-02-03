@@ -5,7 +5,7 @@
       layout:decorate="layout/main">
 <body>
 <div layout:fragment="content">
-    <h4 style="margin-left: 300px">Notifications:</h4>
+    <h4 style="margin-left: 300px; margin-bottom: 30px">Notifications:</h4>
     <div class="card" th:each="notification : ${notifications}" style="margin: 0 300px 30px 300px">
         <div class="card-body">
             <span th:text="${notification.text}"></span>

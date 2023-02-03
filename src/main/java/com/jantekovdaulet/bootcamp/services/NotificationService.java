@@ -16,4 +16,7 @@ public interface NotificationService {
 //    List<Notification> getNotificationsBySalesman(Users salesman);
     void deleteNotificationById(Long notId);
     List<Notification> getNotificationsByToWhom(Users toWhom);
+    void sendNotificationForBuyer(String text, Announcement announcement);
+    void sendNotificationForSalesman(String text, Announcement announcement);
+
 }

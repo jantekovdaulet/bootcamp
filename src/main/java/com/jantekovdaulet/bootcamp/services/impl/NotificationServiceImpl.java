@@ -47,4 +47,22 @@ public class NotificationServiceImpl implements NotificationService {
     public List<Notification> getNotificationsByToWhom(Users toWhom) {
         return notificationRepository.getNotificationByToWhom(toWhom);
     }
+
+    @Override
+    public void sendNotificationForBuyer(String text, Announcement announcement) {
+        Notification notification = new Notification();
+        notification.setText(text);
+        notification.setToWhom(announcement.getBuyer());
+        notification.setAnnouncement(announcement);
+        notificationRepository.save(notification);
+    }
+
+    @Override
+    public void sendNotificationForSalesman(String text, Announcement announcement) {
+        Notification notification = new Notification();
+        notification.setText(text);
+        notification.setToWhom(announcement.getSalesman());
+        notification.setAnnouncement(announcement);
+        notificationRepository.save(notification);
+    }
 }
