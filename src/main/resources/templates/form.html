@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+      layout:decorate="layout/main">
+<body>
+<div layout:fragment="content" style="display: flex; justify-content: center; align-items: center;">
+    <div style="width: 400px">
+        <form th:action="@{'/add-announcement'}" method="post" class="d-flex" role="search">
+            <div class="modal-body">
+                <input type="hidden" name="userId" th:value="${currentUser.id}">
+                <input type="hidden" name="status" th:value="true">
+                <input class="form-control me-2 email" type="text" placeholder="Name" aria-label="Search"
+                       name="name" required>
+                <br>
+                <textarea class="form-control" th:placeholder="Description" id="floatingTextarea2"
+                          style="height: 100px" name="description" required></textarea>
+                <br>
+                <input class="form-control me-2 email" type="number" placeholder="Starting price" aria-label="Search"
+                       name="minPrice" required>
+                <br>
+                <button class="btn btn-outline-success" type="submit">Add Announcement</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

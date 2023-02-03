@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/main">
+<body>
+<div layout:fragment="content" style="display: flex; justify-content: center; align-items: center;">
+    <div style="width: 400px">
+        <form th:action="@{'/register'}" method="post">
+            <div class="mb-3">
+                <label for="userEmail" class="form-label">Email:</label>
+                <input type="email" class="form-control" name="user_email" id="userEmail" required>
+            </div>
+            <div class="mb-3">
+                <label for="userPassword" class="form-label">Password:</label>
+                <input type="password" class="form-control" name="user_password" id="userPassword" required>
+            </div>
+            <div class="mb-3">
+                <label for="reUserPassword" class="form-label">Retype Password:</label>
+                <input type="password" class="form-control" name="re_user_password" id="reUserPassword" required>
+            </div>
+            <div class="mb-3">
+                <label for="userName" class="form-label">Name:</label>
+                <input type="text" class="form-control" name="user_name" id="userName" required>
+            </div>
+            <div class="mb-3">
+                <label for="userSurname" class="form-label">Surname:</label>
+                <input type="text" class="form-control" name="user_surname" id="userSurname" required>
+            </div>
+            <div class="mb-3">
+                <label for="userGender" class="form-label">Gender:</label>
+                <select class="form-control" name="user_gender" id="userGender" required>
+                    <option value="true">Male</option>
+                    <option value="false">Female</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="userBirthday" class="form-label">Birthday:</label>
+                <input type="date" class="form-control" name="user_birthday" id="userBirthday" required>
+            </div>
+            <div class="form-group">
+            <button type="submit" class="btn btn-success float-right">SIGN UP</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

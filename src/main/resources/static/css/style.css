@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Tahoma, serif;
+}
+#profile-content {
+    display: flex;
+    margin: 20px 250px 0 250px;
+    border: gray 1px solid;
+    border-radius: 7px;
+}
+
+#profile-content-photo {
+    width: 45%;
+    border-right: darkgrey 1px solid;
+}
+
+#profile-content-photo-img {
+    height: 400px;
+    width: 300px;
+    margin: 20px;
+}
+
+#profile-content-info {
+    padding: 20px 20px 20px;
+}
+
+.profile-content-info-item {
+    margin-bottom: 5px;
+}
+
+.profile-content-info-item-title {
+    height: 19px;
+    width: 120px;
+}

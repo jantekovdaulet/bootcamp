@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+      layout:decorate="layout/main">
+<body>
+<div layout:fragment="content" style="display: flex; margin: 0 90px 0 90px" class="row g-4">
+    <!--    <form class="d-flex" role="search" th:action="@{'/search-announcement'}" method="get">-->
+    <!--        <input class="form-control me-2" type="search" placeholder="Search" name="key">-->
+    <!--        <button class="btn btn-outline-light" type="submit">Search</button>-->
+    <!--    </form>-->
+    <!--    <br><br>-->
+    <div class="card" th:each="ann : ${announcements}" th:if="${ann.status}"
+         th:style="${ann.currentPrice + 1 != ann.minPrice ? 'border: red 5px solid; width: 18rem; margin-left: 40px;' : 'width: 18rem; margin-left: 40px;'}">
+        <img th:src="@{'/view-ann-picture/' + ${ann.pictureUrl}}" class="card-img-top" alt="..." style="height: 260px">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${ann.name}"></h5>
+            <p class="card-text" th:text="${ann.description}"></p>
+            <div th:if="${ann.minPrice == ann.currentPrice + 1}">
+                <h6 class="card-text" style="color: green" th:text="'$' + ${ann.minPrice}"></h6>
+            </div>
+            <div th:unless="${ann.minPrice == ann.currentPrice + 1}"
+                 style="display: flex; justify-content: space-between">
+                <s><h6 class="card-text" style="color: red" th:text="'$' + ${ann.minPrice}"></h6></s>
+                <h6 class="card-text" style="color: green" th:text="'$' + ${ann.currentPrice}"></h6>
+            </div>
+            <p class="card-text" th:text="'Salesman: ' + ${ann.user.email}"></p>
+            <a th:href="@{'/details/' + ${ann.id}}" class="btn btn-primary">Details</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

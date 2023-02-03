@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/main">
+<body>
+<div layout:fragment="content">
+    <div id="profile-content">
+        <div id="profile-content-photo">
+            <img th:src="@{'/view-photo/' + ${currentUser.pictureUrl}}" id="profile-content-photo-img">
+        </div>
+        <div id="profile-content-info">
+            <div class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Email:</span>
+                <span th:text="${currentUser.email}"></span>
+            </div>
+            <div class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Surname:</span>
+                <span th:text="${currentUser.surname}"></span>
+            </div>
+            <div class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Name:</span>
+                <span th:text="${currentUser.name}"></span>
+            </div>
+            <div class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Birthdate:</span>
+                <span th:text="${currentUser.birthday}"></span>
+            </div>
+            <div class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Gender:</span>
+                <span th:text="${currentUser.gender ? 'Male' : 'Female'}"></span>
+            </div>
+            <div class="profile-content-info-item" style="margin-top: 100px">
+                <form th:action="@{'/upload-avatar'}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Choose picture for avatar:</label>
+                        <input class="form-control" type="file" id="formFile" name="userAvatar">
+                        <br>
+                        <button type="submit" class="btn btn-success">Upload File</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

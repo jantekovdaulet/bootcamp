@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=http://www.ultraq.net.nz/thymeleaf/layout
+      layout:decorate="layout/main">
+<body>
+<div layout:fragment="content">
+    <div id="profile-content">
+        <div id="profile-content-photo">
+            <img th:src="@{'/view-ann-picture/' + ${announcement.pictureUrl}}" id="profile-content-photo-img">
+        </div>
+        <div id="profile-content-info">
+            <h3 th:text="${announcement.name}" style="margin-bottom: 30px"></h3>
+            <!--            <div class="profile-content-info-item">-->
+            <!--                <span class="profile-content-info-item-title">Name:</span>-->
+            <!--                <span th:text="${announcement.name}"></span>-->
+            <!--            </div>-->
+            <div class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Description:</span>
+                <span th:text="${announcement.description}"></span>
+            </div>
+            <div class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Salesman:</span>
+                <span th:text="${announcement.user.surname} + ' ' + ${announcement.user.name} + ' (' + ${announcement.user.email} + ')'"></span>
+            </div>
+            <div class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Starting price:</span>
+                <span th:text="'$' + ${announcement.minPrice}"></span>
+            </div>
+            <div th:if="${announcement.minPrice != announcement.currentPrice + 1}" class="profile-content-info-item">
+                <span class="profile-content-info-item-title">Current price:</span>
+                <span th:text="'$' + ${announcement.currentPrice}"></span>
+            </div>
+            <div th:if="${currentUser.id == announcement.user.id}" class="profile-content-info-item"
+                 style="margin-top: 80px">
+                <form th:action="@{'/upload-ann-picture'}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <input type="hidden" th:value="${announcement.id}" name="annId">
+                        <label for="formFile" class="form-label">Choose picture for announcement:</label>
+                        <input class="form-control" type="file" id="formFile" name="annAvatar">
+                        <br>
+                        <button type="submit" class="btn btn-success">Upload File</button>
+                    </div>
+                </form>
+                <br>
+                <form th:action="@{'/delete-announcement'}" method="post">
+                    <div class="mb-3">
+                        <input type="hidden" th:value="${announcement.id}" name="annId">
+                        <button type="submit" class="btn btn-danger">Delete Announcement</button>
+                    </div>
+                </form>
+            </div>
+            <div th:unless="${currentUser.id == announcement.user.id}" class="profile-content-info-item"
+                 style="margin-top: 80px">
+                <form th:action="@{'/place-bet'}" method="post">
+                    <div class="mb-3">
+                        <input type="hidden" th:value="${announcement.id}" name="annId">
+                        <label for="formFile" class="form-label">Your bet:</label>
+                        <input th:if="${announcement.minPrice == announcement.currentPrice + 1}" class="form-control" type="number" name="bet" th:min="${announcement.minPrice}" th:value="${announcement.minPrice}">
+                        <input th:unless="${announcement.minPrice == announcement.currentPrice + 1}" class="form-control" type="number" name="bet" th:min="${announcement.currentPrice} + 1" th:value="${announcement.currentPrice} + 1">
+                        <br>
+                        <button type="submit" class="btn btn-success">Place a bet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
